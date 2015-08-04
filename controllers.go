@@ -37,7 +37,7 @@ func Fail(w http.ResponseWriter, req *http.Request, data interface{}, status int
 }
 
 func Error(w http.ResponseWriter, req *http.Request, message string, status int) {
-	b, err := json.Marshal(ErrorView{Status: "success", Message: message})
+	b, err := json.Marshal(ErrorView{Status: "error", Message: message})
 	if err != nil {
 		logs.Error(err)
 		return
