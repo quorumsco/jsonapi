@@ -8,12 +8,12 @@ type RequestView struct {
 
 type SuccessView struct {
 	Status string      `json:"status"`
-	Data   interface{} `json:"data"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 type FailView struct {
 	Status string      `json:"status"`
-	Data   interface{} `json:"data"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 type ErrorView struct {
