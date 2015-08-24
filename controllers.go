@@ -24,6 +24,23 @@ func Success(w http.ResponseWriter, req *http.Request, data interface{}, status 
 	w.Write(b)
 }
 
+func SuccessOKOr404(w http.ResponseWriter, req *http.Request, data interface{}) {
+	if data == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	b, err := json.Marshal(SuccessView{Status: "success", Data: data})
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(b)
+}
+
 func Fail(w http.ResponseWriter, req *http.Request, data interface{}, status int) {
 	b, err := json.Marshal(FailView{Status: "fail", Data: data})
 	if err != nil {
