@@ -1,3 +1,4 @@
+// Implements a jsonapi for http responses
 package jsonapi
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/iogo-framework/logs"
 )
 
+// Returns a Success response
 func Success(w http.ResponseWriter, req *http.Request, data interface{}, status int) {
 	if data == nil {
 		w.WriteHeader(status)
@@ -24,6 +26,7 @@ func Success(w http.ResponseWriter, req *http.Request, data interface{}, status 
 	w.Write(b)
 }
 
+// Returns a Success response if the data is not nil
 func SuccessOKOr404(w http.ResponseWriter, req *http.Request, data interface{}) {
 	if data == nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -41,6 +44,7 @@ func SuccessOKOr404(w http.ResponseWriter, req *http.Request, data interface{}) 
 	w.Write(b)
 }
 
+// Returns a Fail response
 func Fail(w http.ResponseWriter, req *http.Request, data interface{}, status int) {
 	b, err := json.Marshal(FailView{Status: "fail", Data: data})
 	if err != nil {
@@ -53,6 +57,7 @@ func Fail(w http.ResponseWriter, req *http.Request, data interface{}, status int
 	w.Write(b)
 }
 
+// Returns an Error response
 func Error(w http.ResponseWriter, req *http.Request, message string, status int) {
 	b, err := json.Marshal(ErrorView{Status: "error", Message: message})
 	if err != nil {
@@ -65,6 +70,7 @@ func Error(w http.ResponseWriter, req *http.Request, message string, status int)
 	w.Write(b)
 }
 
+// Unmarshaled json data into the passed interface
 func Request(data interface{}, req *http.Request) error {
 	var r = new(RequestView)
 	var err = json.NewDecoder(req.Body).Decode(&r)
