@@ -3,9 +3,8 @@ package jsonapi
 
 import (
 	"encoding/json"
+	"github.com/quorumsco/logs"
 	"net/http"
-
-	"github.com/iogo-framework/logs"
 )
 
 // Returns a Success response
