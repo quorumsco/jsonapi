@@ -3,8 +3,9 @@ package jsonapi
 
 import (
 	"encoding/json"
-	"github.com/quorumsco/logs"
 	"net/http"
+
+	"github.com/quorumsco/logs"
 )
 
 // Returns a Success response
@@ -22,6 +23,19 @@ func Success(w http.ResponseWriter, req *http.Request, data interface{}, status 
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+	w.Write(b)
+}
+
+// SuccessToken returns a success response with a temporary token
+func SuccessToken(w http.ResponseWriter, req *http.Request, token string) {
+	b, err := json.Marshal(SuccessView{Status: "success", Token: token})
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(b)
 }
 

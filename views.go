@@ -12,6 +12,7 @@ type RequestView struct {
 type SuccessView struct {
 	Status string      `json:"status"`
 	Data   interface{} `json:"data,omitempty"`
+	Token  string      `json:"token"`
 }
 
 // SuccessView represent a fail json response
