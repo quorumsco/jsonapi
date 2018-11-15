@@ -4,7 +4,7 @@ package jsonapi
 import (
 	"encoding/json"
 	"net/http"
-
+	"compress/gzip"
 	"github.com/quorumsco/logs"
 )
 
@@ -24,6 +24,27 @@ func Success(w http.ResponseWriter, req *http.Request, data interface{}, status 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write(b)
+}
+
+func SuccessCompress(w http.ResponseWriter, req *http.Request, data interface{}, status int) {
+	if data == nil {
+		w.WriteHeader(status)
+		return
+	}
+
+	b, err := json.Marshal(SuccessView{Status: "success", Data: data})
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Encoding", "gzip")
+	w.WriteHeader(status)
+	gz := gzip.NewWriter(w)
+	json.NewEncoder(gz).Encode(b)
+	gz.Close()
+	//w.Write(b)
 }
 
 // SuccessToken returns a success response with a temporary token
